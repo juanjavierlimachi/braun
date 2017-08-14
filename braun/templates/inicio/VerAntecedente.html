@@ -1,0 +1,65 @@
+|upper<div class="table-responsive">
+	<table class="table table-hover table-striped">
+		<tr class="success">
+			<td>Cod</td>
+			<td>Asunto</td>
+			<td>Descripción</td>
+			<td>Fecha y hora de registro</td>
+			<td>Registrado por</td>
+			<td>Estado</td>
+			<td>Editar</td>
+		</tr>
+		{% for i in datos %}
+		<tr>
+			<td>{{i.id}}</td>
+			<td>{{i.asunto|upper}}</td>
+			<td>{{i.descripcion|upper}}</td>
+			<td>{{i.fecha_registro}}</td>
+			<td>{{i.usuario.get_full_name|upper}}</td>
+			{% if i.estado %}
+			<td><span><a href="#" onclick="BajaInfo({{i.id}});" title="Dar de Baja" data-toggle="modal" data-target="#exampleModal"><img src="/static/img/icon_success.gif"></a></span></td>
+			{% else %}
+		<td><span><a href="#" onclick="AltaAntece({{i.id}});" title="Dar de Alta" data-toggle="modal" data-target="#exampleModal"><img src="/static/img/icon_error.gif"></a></span></td>
+			{% endif %}
+			<td>
+				<a href="#" onclick="EditAntece({{i.id}});" title="Editar Informacion" data-toggle="modal" data-target="#exampleModal"><span class="glyphicon glyphicon-pencil"></span></a>
+				<!-- <span class="glyphicon glyphicon-info-sign" title="No Tiene permisos"></span></a> -->
+			</td>
+		</tr>
+		{% empty %}
+		<tr>
+			<td>No se Registró ningún historial para este alumno</td>
+		</tr>
+		{% endfor %}
+		<tr><td></td><td>Registros: {{cont}}</td></tr>
+	</table>
+</div>
+<script type="text/javascript">
+function BajaInfo(ids){
+	$.ajax({
+		type:'GET',
+		url:'/BajaAntecedente/'+ids+'/',
+		success:function(resp){
+			$("#DatosContenidos").html(resp);
+		}
+	});
+}
+function EditAntece(ids){
+	$.ajax({
+		type:'GET',
+		url:'/editAnte/'+ids+'/',
+		success:function(resp){
+			$("#DatosContenidos").html(resp);
+		}
+	});
+}
+function AltaAntece(ids){
+	$.ajax({
+		type:'GET',
+		url:'/AltaAntecedente/'+ids+'/',
+		success:function(resp){
+			$("#DatosContenidos").html(resp);
+		}
+	});
+}
+</script>

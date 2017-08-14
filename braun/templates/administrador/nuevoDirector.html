@@ -1,0 +1,73 @@
+<script type="text/javascript">
+$('#id_username').blur(ejecutar);
+        function ejecutar(){
+            var use= $('#id_username').val();
+            $.ajax({
+                type:'get',
+                url:'/verificacion/',
+                data:{'use': use },
+                beforeSend: entesEnviar,
+                success:function (resp){
+                    console.log(resp);
+                    $('#valid').html(resp);
+                }
+            });
+            function entesEnviar(){
+                $('#valid').text("Verificando...")
+            }
+        }
+    $('#TipoD').submit(function(e){
+        e.preventDefault();
+        var dato=$(this).serialize();
+        console.log(dato);
+        $.ajax({
+            type:'POST',
+            url:'/nuevoDirector/',
+            data: dato,
+            success:function(resp){
+                console.log(resp);
+                $('#FormAjax').html(resp);
+                Canbiodirector();
+            }
+        });
+    });
+    function Canbiodirector(){
+            $.ajax({
+                type:'GET',
+                url:'/Canbiodirector/'+{{user.id}}+'/',
+                success:function(resp){
+                    $('#DatosContenidos').html(resp);
+                    alert(resp)
+                    VerProveedores();
+                }
+            });
+        }
+</script>
+<div class="card">
+    <p id="texto"><strong>Registrar Nuevo Director</strong><br>
+        Nota: Si usted registra un nuevo Director en el sistema su cuenta actual será dado de baja, ya que el sistema no permitirá tener dos cuentas de director.</p>
+    <span>Todos los campos con (*) son requeridos</span>
+ <form method="POST" id="TipoD" > {% csrf_token %}
+    <li style="text-align: center;">Datos de tu cuenta</li>
+<label for="id_username">Nombre de Usuario *:</label>
+    <input id="id_username" placeholder="Ejem. jjavierl" maxlength="40" name="username" type="text" required>
+<label for="id_password1">Contraseña *:</label>
+    <input id="id_password1" placeholder="Contraseña" name="password1" type="password" required>
+<label for="id_password2">Confirmación *:</label>
+    <input id="id_password2" placeholder="Confirmación" name="password2" type="password" required>
+    <li style="text-align: center;">Datos Personales</li>
+<label for="id_first_name">Nombre Completo *:</label>
+    <input id="id_first_name" placeholder="Nombre Completo" maxlength="40" name="first_name" type="text" required>
+<label for="id_last_name">Ap. Paterno *:</label>
+    <input id="id_last_name" placeholder="Apellido Paterno" maxlength="50" name="last_name" type="text" required>
+<label for="id_materno">Ap. Materno *:</label>
+    <input id="id_materno" placeholder="Apellido Materno" maxlength="50" name="materno" type="text" required>
+<label for="id_ci">Nro. de CI. *:</label><input id="id_ci" placeholder="Nro. de CI." maxlength="6" name="ci" type="number">
+<label for="id_telefono">Teléfono/Celular *:</label>
+    <input id="id_telefono" placeholder="Ejem. 78100000" maxlength="8" name="telefono" type="number" required>
+<label for="id_email">Correo Electrónico:</label>
+    <input id="id_email" placeholder="Ejem. jjavier@gmail.com" name="email" type="email" required><br>
+    <button class="btn btn-success" type="submit">Guardar</button>
+  </form>
+  <p id="valid" style="color:red; text_align:center;"></p>
+</div> 

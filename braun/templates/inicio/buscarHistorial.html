@@ -1,0 +1,21 @@
+<script type="text/javascript">
+	$(".aa p").on('click',Escogido);
+	function Escogido(e){
+		e.preventDefault();
+		var ulrs=$(this).attr("href");
+		//alert(ulrs);
+		$.ajax({
+			type:'GET',
+			url:ulrs,
+			success:function(resp){
+				$("#DatosAjax").fadeOut(500);
+				$("#FormAjax").html(resp);
+			}
+		});
+	}
+</script>
+{% for i in resultados %}
+<a class="aa"><p style="cursor: pointer;" href="/escogido/{{alumno.id}}/">Cod: {{i.id}}.- <strong>{{i.asunto|upper}}</strong>: {{i.descripcion}}</p></a>
+{% empty %}
+<a href="#">  <span class="glyphicon glyphicon-alert"> </span> No se encontraron registros</a>
+{% endfor %}

@@ -1,0 +1,18 @@
+<label>Esta Seguro dar de Alta al Profesor: <br>
+	<strong>{{dato.get_full_name|upper}} {{dato.perfil.materno|upper}}</strong>
+</label>
+ <div class="modal-footer">
+    <button class="btn btn-danger" type="button" onclick="AltaAluno();">Confirmar</button>
+  </div>
+<script type="text/javascript">
+function AltaAluno(){
+	$.ajax({
+		type:'GET',
+		url:'/Altadocentes/'+{{dato.id}}+'/',
+		success:function(resp){
+			$("#DatosContenidos").html(resp);
+			DatosUser();
+		}
+	});
+}
+</script>

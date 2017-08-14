@@ -1,0 +1,28 @@
+<script type="text/javascript">
+    $(function(){
+        $('#Tipo').submit(function(e){
+        e.preventDefault();
+        var dato=new FormData(this);
+        console.log(dato);
+        $.ajax({
+            type:'POST',
+            url:'/PlanBimestral/',
+            data: dato,
+            contentType: false,
+            processData: false,
+            success:function(resp){
+                VerClientes();
+            }
+        });
+    });
+    });
+</script>
+<div class="card">
+    <strong>Registre Plan Bimestral</strong><br>
+    <span>Todos los datos con requeridos (*)</span>
+ <form method="POST" id="Tipo" enctype="multipart/form-data"> {% csrf_token %}
+                {{forms}}<br>
+    <button class="btn btn-success">Guardar</button>
+  </form>
+  <p id="valid" style="color:red; text_align:center;"></p>
+</div> 

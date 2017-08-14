@@ -1,0 +1,46 @@
+{% load static from staticfiles  %}
+<div class="table-responsive">
+<table class="table table-hover table-striped">
+	<tr><td colspan="8" align="center">LISTA PLAN BIMESTRAL</td></tr>
+		<tr class="success">
+			<td>Bimestre</td>
+			<td>Título</td>
+			<td>Descripción</td>
+			<!-- <td>Documento</td> -->
+			<td>Docente</td>
+			<td>Fecha y hora de registro</td>
+			<td>Estado</td>
+			<td>Opciones</td>
+		</tr>
+{% for b in bimestres %}
+<tr>
+	
+	<td>{{b.bimestre}}</td>
+	<td><a href="/info/{{b.id}}/" data-toggle="modal" data-target="#exampleModal">{{b.titulo}}</a></td>
+	<td>{{b.descripcion}}</td>
+	<!-- <td><img src="{{MEDIA_URL}}{{b.archivo }}"></td> -->
+	<td>{{b.docente}}</td>
+	<td>{{b.fecha_registro}}</td>
+	<td>
+	{% if b.estado %}
+			<span><a href="/UsuarioVer/{{j.id}}/"><img src="/static/img/icon_success.gif"></a></span>
+		{% else %}
+			<span><a href="/UsuarioVer/{{j.id}}/"><img src="/static/img/icon_error.gif"></a></span>
+	{% endif %} 
+	</td>
+	<td>
+		{% if user.is_superuser %}
+		<a href="/editCate/{{i.id}}/"><span class="glyphicon glyphicon-pencil"></span></a>
+		<a href="/deleteCate/{{i.id}}/" style="color:red;"><span class="glyphicon glyphicon-trash"></span></a>
+		{% else %}
+			<span class="glyphicon glyphicon-info-sign"></span>
+		{% endif %}
+	</td>
+</tr>
+	{% endfor %}
+	<tr>
+		<td colspan="8">Regsitros:{{t_b}}</td>
+	</tr>
+	</table>
+</div>
+

@@ -1,0 +1,58 @@
+<script type="text/javascript">
+$('#id_username').blur(ejecutar);
+        function ejecutar(){
+            var use= $('#id_username').val();
+            $.ajax({
+                type:'get',
+                url:'/verificacion/',
+                data:{'use': use },
+                beforeSend: entesEnviar,
+                success:function (resp){
+                    console.log(resp);
+                    $('#valid').html(resp);
+                }
+            });
+            function entesEnviar(){
+                $('#valid').text("Verificando...")
+            }
+        }
+
+    function verificar(){
+        var user=$('#id_username').val();
+        var pass=$('#id_password').val();
+        var repass=$('#id_password_confirm').val();
+        var nombre=$('#id_first_name').val();
+        var ape=$('#id_last_name').val();
+        if (user==''||pass==''||repass==''||nombre==''||ape==''){
+            alert('Error no deve dejar casillas en blanco');
+            return false;
+        }
+        else{
+           
+        }
+    }
+    $('#Tipo').submit(function(e){
+        e.preventDefault();
+        var dato=$(this).serialize();
+        console.log(dato);
+        $.ajax({
+            type:'POST',
+            url:'/nuevo/',
+            data: dato,
+            success:function(resp){
+                console.log(resp);
+                $('#FormAjax').html(resp);
+            }
+        });
+    });
+</script>
+<div class="card">
+    <p id="texto">Registrar Nuevo Docente</p>
+    <span>Todos los campos con (*) son requeridos</span>
+ <form method="POST" id="Tipo" onsubmit='return verificar()'> {% csrf_token %}
+                {{form}}<br>
+    <button class="btn btn-success" type="submit"
+    onsubmit='verificar()'>Guardar</button>
+  </form>
+  <p id="valid" style="color:red; text_align:center;"></p>
+</div> 

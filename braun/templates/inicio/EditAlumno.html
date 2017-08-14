@@ -1,0 +1,33 @@
+<div class="table-responsive">
+<div class="card">
+<form method="POST" id="TipoT">{% csrf_token %}
+  {{ formsUser }}
+  {{ formsAlum }}<br>
+    <div class="modal-footer">
+    <button class="btn btn-primary">Actualizar</button>
+  </div>
+</form>
+</div>
+</div>
+<script type="text/javascript">
+$('#TipoT').submit(function(e){
+		e.preventDefault();
+		var dato=$(this).serialize();
+		console.log(dato);
+		$.ajax({
+			type:'POST',
+			url:'/EditAlumno/'+{{cod}}+'/',
+			data: dato,
+			success:function(resp){
+				$(".modal-body").html(resp);
+				$.ajax({
+					type:'GET',
+					url:'/escogido/'+{{cod}}+'/',
+					success:function(resp){
+						$("#FormAjax").html(resp);
+					}
+				});
+			}
+		});
+ });
+</script>

@@ -1,0 +1,29 @@
+<label>Esta Seguro dar de Baja esta Información? <br>
+	<strong>Asunto: {{dato.asunto}}<br> Alumno:{{dato.alumno}}</strong>
+	 </label>
+
+ <div class="modal-footer">
+    <button class="btn btn-danger" type="button" onclick="DelAntecedente();">Confirmar</button>
+  </div>
+  <script type="text/javascript">
+function DelAntecedente(){
+	$.ajax({
+		type:'GET',
+		url:'/DelAntecedentes/'+{{dato.id}}+'/',
+		success:function(resp){
+			$("#DatosContenidos").html(resp);
+			UpdateInfo();
+		}
+	});
+}
+function UpdateInfo(){
+	$.ajax({
+		type:'GET',
+		url:'/verHistorial/'+{{dato.alumno.id}}+'/',
+		success:function(resp){
+			$(".card").fadeOut();
+			$("#ante").html(resp);
+		}
+	});
+}
+  </script>

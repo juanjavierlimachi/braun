@@ -1,0 +1,61 @@
+<style type="text/css">
+    #busquedaFrol{width:800px;margin: auto;margin-top: 20px;}
+    #busquedaFrol #buscarA{width: 500px;margin: auto;float: left;}
+    #busquedaFrol #id_alumno{float: right;width: 300px;}
+</style>
+<div class="input-group custom-search-form" id="busquedaFrol">
+<form action="/buscarAlumno/" method="post" id="buscarA" class="sidebar-form">
+    {% csrf_token %}
+<div class="input-group">
+
+ <label>Busque un Estudiante:</label> <input type="text" name="alumno" id="id_alumno" class="form-control" title=" Buscar Trabajador" placeholder="Nombre, Apellido, Ci," required>
+      <span class="input-group-btn">
+<button type="submit" name="search" id="search-btn" class="btn btn-flat"><span class="glyphicon glyphicon-search"></span>
+        </button>
+      </span>
+</div>
+</form>
+</span>
+</div>
+<script type="text/javascript">
+$(document).ready(Sheart);
+    function Sheart(){ 
+      var tbuscar=$("#id_alumno").attr('autocomplete','off');
+      tbuscar.keypress(buscar);
+  }
+  function buscar(){
+    $.ajax({
+        type:'GET',
+        url:'/buscarAlumno/',
+        data:$("#buscarA").serialize(),
+        success:resultado,
+        error:errores
+    });
+    console.log($("#buscarA").serialize());
+}
+function resultado(data){
+    $("#DatosAjax").fadeIn("slow");
+    console.log(data);
+    $("#DatosAjax").html(data);
+}
+function errores(){
+    alert ("Error");
+}
+$("#buscarA").on("submit",function(e){
+        e.preventDefault();
+        var datos=$(this).serialize();
+        //alert(datos);
+          $.ajax({
+              type:"POST",
+              url:"/buscarAlumno/",
+              data:datos,
+              success:function(resp){
+                $(".resultados").fadeIn("slow");
+                //alert(resp);
+                $("#DatosAjax").html(resp);
+                
+              }
+          });
+      });
+</script>
+

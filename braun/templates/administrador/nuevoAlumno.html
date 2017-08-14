@@ -1,0 +1,79 @@
+<script type="text/javascript">
+$('#id_ci').blur(ejecutar);
+        function ejecutar(){
+            var use= $('#id_ci').val();
+            $.ajax({
+                type:'get',
+                url:'/verificacion/',
+                data:{'use': use },
+                beforeSend: entesEnviar,
+                success:function (resp){
+                    console.log(resp);
+                    $("#valid").html(resp);
+                }
+            });
+            function entesEnviar(){
+                $('#valid').text("Verificando...")
+            }
+        }
+$("#id_ci").blur(Convalidar);
+function Convalidar(){
+    $("#id_username").val($("#id_ci").val());
+    $("#id_password1").val($("#id_ci").val());
+    $("#id_password2").val($("#id_ci").val());
+}
+
+    function verificar(){
+        
+        var nombre=$('#id_first_name').val();
+        var ape=$('#id_last_name').val();
+        if (nombre==''||ape==''){
+            alert('Error no deve dejar casillas en blanco');
+            return false;
+        }
+        else{
+           
+        }
+    }
+    $('#Tipo').submit(function(e){
+        e.preventDefault();
+        var dato=$(this).serialize();
+        console.log(dato);
+        $.ajax({
+            type:'POST',
+            url:'/nuevoAlumno/',
+            data: dato,
+            success:function(resp){
+                console.log(resp);
+                $('#FormAjax').html(resp);
+            }
+        });
+    });
+$(function(){
+    document.getElementById("id_first_name").focus();
+});
+</script>
+<div class="card">
+    <p id="texto">Registrar Nuevo Alumno</p>
+    <span>Todos los campos con (*) son requeridos</span>
+ <form method="POST" id="Tipo" onsubmit="return verificar()"> 
+   {% csrf_token %}
+    <input id="id_username" maxlength="40" name="username" type="hidden">
+     <input id="id_password1" name="password1" type="hidden">
+<input id="id_password2" name="password2" type="hidden">
+<label for="id_first_name">Nombre Completo *:</label>
+<input id="id_first_name" maxlength="40" name="first_name" type="text" placeholder="Nombre Completo" required />
+<label for="id_last_name">Ap. Paterno *:</label>
+<input id="id_last_name" maxlength="50" name="last_name" type="text" placeholder="Apellido Paterno" required />
+<label for="id_materno">Ap. Materno *:</label>
+<input id="id_materno" maxlength="50" name="materno" type="text" placeholder="Apellido Materno" required />
+<label for="id_ci">Nro. de CI. *:</label>
+<input id="id_ci" name="ci" type="number" placeholder="Max 6 digitos" required />
+<label for="id_telefono">Celular:</label>
+<input id="id_telefono" name="telefono" type="number" placeholder="Celular">
+<label for="id_email">Correo Electrónico:</label>
+<input id="id_email" name="email" type="email" placeholder="Ejem: Jjavier@gmail.com"><br>
+    <button class="btn btn-success" type="submit" onsubmit="verificar()">Aceptar</button>
+  </form>
+  <p id="valid" style="color:red; text_align:center;"></p>
+</div> 

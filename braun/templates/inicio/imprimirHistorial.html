@@ -1,0 +1,59 @@
+<html>
+	<head>
+		<title>Historial</title>
+		<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body>
+<div class="table-responsive">
+	<div id="menbrete">
+		<p>Colegio Mariscal “Otto Felipe Braun”<br>
+   Fundado  el   7 de  abril   de  1972<br>
+    Fanola – Uyuni  Teléf. 6223885</p>
+	</div>
+	<table class="table table-hover table-striped" style="padding: 8px;">
+		<tr><td colspan="4" align="center"><strong>M E M O R A N D U M</strong></tr>
+		<tr>
+			<td colspan="2">Estudiante: <br>
+				<p> {{nombre_alumno.get_full_name|upper}} {{nombre_alumno.perfilAlumno.materno|upper}} CI:{{datos.alumno}}<br>Presente.-</p>
+				
+			</td>
+			<td colspan="2"><p style="text-align: right;">Potosí,  {{fecha}}<br>
+				Código: {{datos.id}}</p></td>
+		</tr>
+
+		<tr>
+			<td colspan="4" stye="FONT-SIZE: 14px; COLOR: #FFFFFF; FONT-FAMILY: Arial; TEXT-DECORATION: none ; TEXT-ALIGN:justify;">
+				<p>La  Dirección  del  Colegio  “Otto  Felipe  Braun” de  acuerdo  a  normas  generales  para  la  presente  gestión  educativa  se  le  sanciona  a  su  persona  con  tres  días  de  suspensión sin  abandono  del  establecimiento  ( Actividad comunitaria)  de  acuerdo al  reglamento  interno  y  el  artículo  48  inciso  1   del  reglamento  del  subsistema  de  Educación  Regular.
+				
+			</p>
+			<p style="text-align: left;">Atentamente.</p>
+			</td>
+		</tr>	
+		
+		<tr><td colspan="4" align="center"><br><p style="center">{% if user.is_superuser %}
+			 {{user.get_full_name|upper}} {% else %}
+				Prof: {{user.get_full_name|upper}} {% endif %}
+			<br>
+			<strong>D I R E C T O R </strong></p>
+</td>	</tr>
+		<!-- 
+<tr>
+			<td >
+			</td>
+		 <td>{{i.usuario.get_full_name|upper}}</td>	
+		</tr>
+
+
+		<tr><td>Aún no se registro ningún historial para este alumno.</td></tr> -->
+	</table>
+</div>
+
+	</body>
+</html>
+<style type="text/css">
+table{
+
+}
+</style>

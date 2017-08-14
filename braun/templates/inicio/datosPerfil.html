@@ -1,0 +1,28 @@
+<style type="text/css">
+.helptext {display: none;}
+</style>
+<script type="text/javascript">
+$('#Tipo').submit(function(e){
+		e.preventDefault();
+		var dato=$(this).serialize();
+		console.log(dato);
+		$.ajax({
+			type:'POST',
+			url:'/editarperfil/',
+			data: dato,
+			success:function(resp){
+				console.log(resp);
+				$('#FormAjax').html(resp);
+			}
+		});
+	});
+</script>
+<div class="table-responsive">
+<div class="card">
+<form method="POST" id="Tipo">{% csrf_token %}
+  {{ user_form }}
+    {{ perfil_form }}<br>
+   <button class="btn btn-success">Guardar</button>
+</form>
+</div>
+</div>

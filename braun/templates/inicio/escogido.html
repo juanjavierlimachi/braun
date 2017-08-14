@@ -1,0 +1,121 @@
+<div class="table-responsive">
+	<div class="btn-group">
+	  	{% if user.is_superuser %}
+	  	<button type="button" onclick="EditAlumno();" class="btn btn-default" data-toggle="modal" data-target="#exampleModal">
+			<span class="glyphicon glyphicon-user"></span>  Editar Datos</button>
+	  	{% endif %}
+		<button type="button" onclick="verHistorial();" class="btn btn-default">
+			<span class="glyphicon glyphicon-folder-open"></span>    Ver Historial</button>
+	  <button type="button" onclick="Registrar();" class="btn btn-default">
+			<span class="glyphicon glyphicon-plus"></span>  Nueva llamada de Atención</button>
+	  <a href="/imprimirHistorial/{{users.perfilAlumno.id}}/" target="_blank" type="button" class="btn btn-default"><span class="glyphicon glyphicon-print"></span>  Imprimir Historial</a>
+ {% if user.is_superuser %}
+	  {% if users.is_active%}
+			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="DarBaja();"><img src="/static/img/icon_success.gif"> Dar Baja</button></span>
+		{% else %}
+			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="DarAlta();"><img src="/static/img/icon_error.gif"> Dar Alta</button></span>
+	{% endif %}
+{% endif %}
+	</div>
+<table class="table table-hover table-striped">
+	<tr class="success"><td colspan="5" align="center"><strong>Kardex Historial Alumno</strong></td></tr>
+	<tr>
+		<td>Nombre Completo: </td><td>{{users.get_full_name|upper}} {{users.perfilAlumno.materno|upper}}</td>
+	</tr>
+	<tr>
+		<td>Nro. de CI: </td><td>{{users.perfilAlumno.ci}}</td>
+	</tr>
+	<tr>
+		<td>Telf. - Cel. </td><td>{{users.perfilAlumno.telefono}}</td>
+	</tr>
+	<tr>
+		<td>Correo electrónico: </td><td>{{users.email}}
+	 </td>
+	</tr>
+</table>
+<hr>
+<div class="card">
+    {% if users.is_active %}
+    <p> <strong> Registrar Nueva llamada de atención</strong><br>
+    	Todos los campos son requeridos</p>
+ <form method="POST" id="Tipot"> {% csrf_token %}
+     {{forms}}<br>
+    <button class="btn btn-success">Registrar</button>
+  </form>
+  {% else %}
+  <p style="color:red;">Por el Momento no puedes Registrar ningún historial por que el alumno está en baja</p>
+  {% endif %}
+</div> 
+</div>
+<div id="ante"></div>
+<script type="text/javascript">
+$(function(){
+        $('#Tipot').submit(function(e){
+        e.preventDefault();
+        var dato=$(this).serialize();
+        console.log(dato);
+        $.ajax({
+            type:'POST',
+            url:'/escogido/'+{{users.id}}+'/',
+            data: dato,
+            success:function(resp){
+                $("#ante").html(resp);
+                $("#ante").fadeIn(500);
+                misAntecedentes();
+            }
+        });
+    });
+function misAntecedentes(){
+	$.ajax({
+		type:'GET',
+		url:'/misAntecedentes/'+{{users.perfilAlumno.id}}+'/',
+		success:function(resp){
+			$(".card").hide();
+			$("#ante").html(resp);
+		}
+	});
+}
+});
+function verHistorial(){
+	$.ajax({
+		type:'GET',
+		url:'/verHistorial/'+{{users.perfilAlumno.id}}+'/',
+		success:function(resp){
+			$(".card").hide(500);
+			$("#ante").html(resp).fadeIn(500);
+		}
+	});
+}
+function Registrar(){
+	$("#ante").fadeOut(500);//Oculta elemento
+	$(".card").fadeIn(500);//muestra elemento
+}
+function DarBaja(){
+	$.ajax({
+		type:'GET',
+		url:'/AlumnoVerDaja/'+{{users.id}}+'/',
+		success:function(resp){
+			$("#DatosContenidos").html(resp);
+		}
+	});
+}
+function DarAlta(){
+	$.ajax({
+		type:'GET',
+		url:'/AlumnoVerAlta/'+{{users.id}}+'/',
+		success:function(resp){
+			$("#DatosContenidos").html(resp);
+		}
+	});
+}
+function EditAlumno(){
+	$("#exampleModal .modal-title").text("Actualizar datos del Estudiante");
+	$.ajax({
+		type:'GET',
+		url:'/EditAlumno/'+{{users.id}}+'/',
+		success:function(resp){
+			$("#DatosContenidos").html(resp);
+		}
+	});
+}
+</script>

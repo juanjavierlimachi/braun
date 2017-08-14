@@ -1,0 +1,219 @@
+{% load staticfiles %}
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>::C.N.B::</title>
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/flexslider.css' %}">
+<link rel="stylesheet" href="{% static 'css/jquery.fancybox.css' %}">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+<link rel="stylesheet" href="{% static 'css/font-icon.css' %}">
+<style type="text/css">
+#historia .row div p{color: black;}
+</style>
+</head>
+
+<body>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!--contenido-->
+       
+      </div>
+   
+    </div>
+  </div>
+</div>
+<!-- header section -->
+<section class="banner" role="banner">
+  <header id="header">
+    <div class="header-content clearfix"> <a class="logo" href="/">Col. Otto Felipe Braun</a>
+
+      <nav class="navigation" role="navigation">
+        <ul class="primary-nav">
+          <li><a href="/">Inicio</a></li>
+        <!-- <li id="enlaces"><a href="/bimestral/" data-toggle="modal" data-target="#exampleModal">Plan Bimestral</a></li>  -->
+          <!--<li><a href="#services">Services</a></li>-->
+          <!-- <li id="enlaces"><a href="/materias/" data-toggle="modal" data-target="#exampleModal">Actividades</a></li> -->
+          <li><a href="javascript: void(0);" onclick="window.open('http://www.facebook.com/sharer.php?u=https://shrouded-journey-73490.herokuapp.com/','ventanacompartir', 'toolbar=0, status=0, width=650, height=450');">Compartir</a></li>
+          <li id="enlaces"><a href="/galeria/">Alumnos</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="/salir/">Salir</a></li>
+          {% else %}
+            <li id="enlaces"><a href="/loguin/" data-toggle="modal" data-target="#exampleModal">Ingresar</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+      <a href="#" class="nav-toggle">Menu<span></span></a> </div>
+  </header>
+  <!-- banner text --> 
+    <div class="banner" id="banner"> 
+	<div class="slider-banner">
+            <div data-lazy-background="{% static 'img/3.jpg' %}"> 
+                <h3 data-pos="['70%', '110%', '70%', '15%']" data-duration="700" data-effect="move">
+                    Colegio Nacional "Otto Felipe Braun"
+                </h3> 
+            </div>
+            <div data-lazy-background="{% static 'img/slidee.jpg' %}">
+               
+                <h3 data-pos="['70%', '110%', '70%', '35%']" data-duration="700" data-effect="move">
+                    Dirección: Fanola s/n
+                </h3> 
+            </div>
+			<div data-lazy-background="{% static 'img/3.jpg' %}">
+				<h3 data-pos="['70%', '110%', '70%', '35%']" data-duration="700" data-effect="move">
+					Potosí - Bolivia 
+				</h3> 
+			</div>
+        </div>
+      <!-- banner text --> 
+    </div> 
+</section>
+
+<section id="testimonials" class="section testimonials no-padding" id="historia">
+  <div class="jumbotron">
+        <div class="container marketing">
+          <div class="row">
+              <div class="col-lg-4">
+                  
+                  <i><h2 class="text-center">Visión</h2></i>
+                  <p align="justify">Ser una institución educativa, tecnologica en crecimiento sostenido y rentable, reconocida por su liderazgo educativo a nivel nacional e internacional, mediante la profesionalización de sus colaboradores y su vinculación con la sociedad, a través de un programa continuo de responsabilidad social.&raquo;</p>
+               
+              </div> 
+              <div class="col-lg-4">
+                  
+                  <i><h2 class="text-center">Misión</h2></i>
+                  <p align="justify">Somos una institución educativa que impulsa el desarrollo integral de nuestros alumnos potencializando sus capacidades, habilidades y actitudes, para contribuir a la formación de seres humanos con un pensamiento crítico, científico y humanista, capaces de trabajar en equipo y trazar su proyecto de vida en el marco de un ambiente multicultural sustentado en los valores de honestidad, respeto, lealtad, solidaridad y responsabilidad social.</p>
+                  
+              </div>
+              <div class="col-lg-4">
+                 
+                  <i><h2 class="text-center">Historia</h2></i>
+                  <p align="justify">El Colegio Nacional Mariscal Otto Felipe Braun del departamento de Potosi, es uno de los colegios más importantes y prestigiosos de Bolivia, siendo un referente gracias a tener a algunos de los mejores especialistas en creatividad, pedagogía, aula de informática y clases de recuperación de asignaturas.
+                  Mariscal Otto Felipe Braun fue nombrado Héroe de Junín, Vencedor de Yanacocha, Miembro de la Legión de Honor Boliviana, y Gran Mariscal de los Ejércitos de la Confederación con el título de Gran Mariscal de Montenegro.&raquo;</p>
+                 <!-- <p class="text-center"> <a class="btn btn-info glyphicon glyphicon-bed" href="#"> Mas...</a></p> -->
+              </div>
+          </div>
+        </div>
+      </div>
+</section>
+<!-- header section --> 
+
+<!-- <section id="gallery" class="gallery section">
+  <div class="container-fluid">
+    <div class="section-header">
+                <h2 class="wow fadeInDown animated">Galeria de Fotos</h2>
+            </div>
+    <div class="row no-gutter">
+      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/01.jpg" class="work-box"> <img src="images/portfolio/01.jpg" alt="">
+        <div class="overlay">
+          <div class="overlay-caption">
+             <p><span class="icon icon-magnifying-glass"></span></p>
+          </div>
+        </div>
+        </a> </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/02.jpg" class="work-box"> <img src="images/portfolio/02.jpg" alt="">
+        <div class="overlay">
+          <div class="overlay-caption">
+            <p><span class="icon icon-magnifying-glass"></span></p>
+          </div>
+        </div>
+        </a> </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/03.jpg" class="work-box"> <img src="images/portfolio/03.jpg" alt="">
+        <div class="overlay">
+          <div class="overlay-caption">
+            <p><span class="icon icon-magnifying-glass"></span></p>
+          </div>
+        </div>
+        </a> </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/04.jpg" class="work-box"> <img src="images/portfolio/04.jpg" alt="">
+        <div class="overlay">
+          <div class="overlay-caption"> 
+            <p><span class="icon icon-magnifying-glass"></span></p>
+          </div>
+        </div>
+        </a> </div>
+		</div>
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/05.jpg" class="work-box"> <img src="images/portfolio/05.jpg" alt="">
+        <div class="overlay">
+          <div class="overlay-caption">
+            <p><span class="icon icon-magnifying-glass"></span></p>
+          </div>
+        </div>
+   
+        </a> </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/06.jpg" class="work-box"> <img src="images/portfolio/06.jpg" alt="">
+        <div class="overlay">
+          <div class="overlay-caption">
+            <p><span class="icon icon-magnifying-glass"></span></p>
+          </div>
+        </div>
+       
+        </a> </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/07.jpg" class="work-box"> <img src="images/portfolio/07.jpg" alt="">
+        <div class="overlay">
+          <div class="overlay-caption">
+            <p><span class="icon icon-magnifying-glass"></span></p>
+          </div>
+        </div>
+        </a> </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/08.jpg" class="work-box"> <img src="images/portfolio/08.jpg" alt="">
+        <div class="overlay">
+          <div class="overlay-caption">
+             <p><span class="icon icon-magnifying-glass"></span></p>
+          </div>
+        </div>
+ 
+        </a> </div>
+    </div>
+  </div>
+</section> -->
+<!-- gallery section --> 
+<section>
+<p>Sitio Web Desarrollado por: Ing. Juan Javier Limachi - email: sistemasuatf12345@gmail.com</p>
+</section>
+
+
+<!-- Footer section --> 
+<script src="{% static 'js/jquery.js' %}"></script> 
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.flexslider-min.js' %}"></script> 
+<script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>  
+<script src="{% static 'js/modernizr.js' %}"></script> 
+<script src="{% static 'js/main.js' %}"></script> 
+<script type="text/javascript" src="{% static 'js/jquery.contact.js' %}"></script> 
+<script type="text/javascript" src="{% static 'js/jquery.devrama.slider.min-0.9.4.js' %}"></script>
+<script type="text/javascript">
+		$(document).ready(function(){
+			$('.slider-banner').DrSlider({
+				'transition': 'fade',
+				showNavigation: false,
+				progressColor: "#000000"
+			});
+		});  
+      $("#enlaces a").on("click",function(e){
+        e.preventDefault();
+        $.ajax({
+          type:'GET',
+          url:$(this).attr("href"),
+          success:function(resp){
+            $(".modal-body").html(resp);
+          }
+        });
+      });
+	</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<div class="table-responsive">
+<table class="table table-hover table-striped">
+	<tr><td colspan="8" align="center">LISTA DE ALUMNOS EN EL SISTEMA</td></tr>
+		<tr class="success">
+			<td>Nombre(s)</td>
+			<td>Ap. Paterno</td>
+			<td>Ap. Materno</td>
+			<td>Nro. CI.</td>
+			<td>E-mail</td>
+			<td>Teléfono</td>
+			<td>Fecha y hora de registro</td>
+			<td>Estado</td>
+		</tr>
+{% for j in contenido %}
+<tr>
+	<td><a href="/escogido/{{j.id}}/" id="es"><span class="glyphicon glyphicon-chevron-right"></span></a> 
+		{{j.first_name|upper}}</td>
+	<td>{{j.last_name|upper}}</td>
+	<td>{{j.perfilAlumno.materno|upper}}</td>
+	<td>{{j.perfilAlumno.ci}}</td>
+	<td>{{j.email}}</td>
+	<td>{{j.perfilAlumno.telefono}}</td>
+	<td>{{j.date_joined}}</td>
+	<td>
+	{% if j.is_active %}
+			<span><img src="/static/img/icon_success.gif"></span>
+		{% else %}
+			<span><img src="/static/img/icon_error.gif"></span>
+	{% endif %}
+	</td>
+</tr>
+		
+		
+{% endfor %}
+	<tr>
+		<td>Usuarios:{{t_user}}</td>
+	</tr>
+	</table>
+	<ul class="pager">
+		{% if contenido.has_previous %}
+			  <li><a href="/verAlumno/?page={{ contenido.previous_page_number }}">Anterior</a></li>
+		{% endif %}
+		 <span class="current">
+            Página {{ contenido.number }} de {{ contenido.paginator.num_pages }}.
+        </span>
+        {% if contenido.has_next %}
+			  <li><a href="/verAlumno/?page={{ contenido.next_page_number }}">Siguiente</a></li>
+		{% endif %}
+	</ul>
+</div>
+<script type="text/javascript">
+	$(".table tr td #es").on("click",function(e){
+		e.preventDefault();
+			$.ajax({
+				type:'GET',
+				url:$(this).attr("href"),
+				beforeSend:Espera,
+				success:function(resp){
+					$("#FormAjax").html(resp);
+				}
+			});
+			 function Espera(){
+		      $("#FormAjax").html('<img src="/static/img/log.gif" id="icono"></img><br>Procesando...');
+		    }
+	});
+	$(".pager li a").on("click",function(e){
+		e.preventDefault();
+			$.ajax({
+					type:'GET',
+					url:$(this).attr("href"),
+					beforeSend:Espera,
+					success:function(resp){
+						$("#FormAjax").html(resp);
+					}
+			});
+			 function Espera(){
+		      $("#FormAjax").html('<img src="/static/img/log.gif" id="icono"></img><br>Procesando...');
+		    }
+	});
+</script>
+

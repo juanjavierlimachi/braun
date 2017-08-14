@@ -1,0 +1,18 @@
+<label>Esta Seguro dar de baja al Profesor: <br>
+	<strong>{{dato.get_full_name|upper}} {{dato.perfil.materno|upper}}</strong>
+</label>
+ <div class="modal-footer">
+    <button class="btn btn-danger" type="button" onclick="DelDocente();">Confirmar</button>
+  </div>
+  <script type="text/javascript">
+function DelDocente(){
+	$.ajax({
+		type:'GET',
+		url:'/Deletedocente/'+{{dato.id}}+'/',
+		success:function(resp){
+			$("#DatosContenidos").html(resp);
+			DatosUser();
+		}
+	});
+}
+  </script>

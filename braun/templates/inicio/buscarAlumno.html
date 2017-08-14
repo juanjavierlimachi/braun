@@ -1,0 +1,21 @@
+<script type="text/javascript">
+	$(".aa p").on('click',Escogido);
+	function Escogido(e){
+		e.preventDefault();
+		var ulrs=$(this).attr("href");
+		//alert(ulrs);
+		$.ajax({
+			type:'GET',
+			url:ulrs,
+			success:function(resp){
+				$("#DatosAjax").fadeOut(500);
+				$("#FormAjax").html(resp);
+			}
+		});
+	}
+</script>
+{% for i in resultados %}
+<a class="aa"><p style="cursor: pointer;" href="/escogido/{{i.id}}/">Cod: {{i.id}}.- {{i.get_full_name|upper}} {{i.perfilAlumno.materno|upper}} - CI: {{i.perfilAlumno.ci}}</p></a>
+{% empty %}
+No hay Registros: <a href="#" onclick="NewAlumnos();"> <span class="glyphicon glyphicon-user"> </span>  Registrar Nuevo Alumno</a>
+{% endfor %}

@@ -1,0 +1,41 @@
+<form method="POST" class="form-horizontal" role="form" id="formulario">
+	{% csrf_token %}
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-3 control-label">Usuario </label>
+        <input type="text" class="form-control" id="name" placeholder="Escriba su Nombre de Usuario" name="name" required/>
+</div>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-3 control-label">Contraseña</label>
+        <input type="password" class="form-control" id="password" placeholder="Escriba su Contraseña" name="password" required/>
+</div>
+ <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+  <div class="modal-footer">
+    <button class="btn btn-primary">Ingresar</button>
+  </div>
+</form>
+<script type="text/javascript">
+$(function(){
+
+	$(".modal-title").text("Ingrese al Sistema");
+	$("#name").focus();
+	$(".btn").on("click",function(e){
+		e.preventDefault();
+		//console.log($('#formulario').serialize());
+		$.ajax({
+			type:'POST',
+			url:'/loguin/',
+			data:$('#formulario').serialize(),
+			success:function(resp){
+				if(resp=='/privado/'){
+					$('#exampleModal').modal('hide');
+					window.location='/privado/';
+				}
+				else{
+					$("#login-alert").fadeIn(200);
+                    $("#login-alert").html(resp);
+				}
+			}
+		});
+	});
+});
+</script>
