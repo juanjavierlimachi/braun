@@ -1,1 +1,1 @@
-web: gunicorn colegio.wsgi --log-file -
+web: gunicorn braun.wsgi --log-file -
