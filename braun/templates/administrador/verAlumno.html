@@ -5,10 +5,9 @@
 			<td>Nombre(s)</td>
 			<td>Ap. Paterno</td>
 			<td>Ap. Materno</td>
+			<td>Curso</td>
 			<td>Nro. CI.</td>
-			<td>E-mail</td>
 			<td>Teléfono</td>
-			<td>Fecha y hora de registro</td>
 			<td>Estado</td>
 		</tr>
 {% for j in contenido %}
@@ -17,10 +16,9 @@
 		{{j.first_name|upper}}</td>
 	<td>{{j.last_name|upper}}</td>
 	<td>{{j.perfilAlumno.materno|upper}}</td>
+	<td>{{j.perfilAlumno.curso}}</td>
 	<td>{{j.perfilAlumno.ci}}</td>
-	<td>{{j.email}}</td>
 	<td>{{j.perfilAlumno.telefono}}</td>
-	<td>{{j.date_joined}}</td>
 	<td>
 	{% if j.is_active %}
 			<span><img src="/static/img/icon_success.gif"></span>

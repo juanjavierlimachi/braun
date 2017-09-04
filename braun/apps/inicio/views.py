@@ -1,7 +1,6 @@
 #encoding:utf-8
 from django.shortcuts import render, render_to_response
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -18,6 +17,8 @@ from django.db.models import Q
 import StringIO
 from xhtml2pdf import pisa
 from django.template.loader import render_to_string
+from datetime import datetime, date, time, timedelta
+
 # Create your views here.
 def inicio(request):
 	return render(request,'inicio/inicio.html')
@@ -46,6 +47,8 @@ def loguin(request):
 						if acceso.is_active:
 							login(request,acceso)
 							return HttpResponseRedirect('/privado/')
+						else:
+							return HttpResponse("Error, Usuario o contraseña incorrecta.")
 			else:
 				return HttpResponse("Error, Usuario o contraseña incorrecta.")
 	else:
@@ -53,7 +56,7 @@ def loguin(request):
 	return render(request,'inicio/loguin.html')
 @login_required(login_url='/')
 def privado(request):
-	now = datetime.datetime.now()
+	now = datetime.now()
 	if request.user.is_superuser:
 		return render(request,'administrador/admin.html',{'now':now},context_instance=RequestContext(request))
 	else:
@@ -64,7 +67,7 @@ def privado(request):
 			if request.user.is_active:
 				return render(request,'inicio/inicio.html',{'now':now},context_instance=RequestContext(request))
 			else:
-				return HttpResponse("Error")
+				return HttpResponseRedirect('/salir/')
 
 @login_required(login_url='/')
 def salir(request):
@@ -125,7 +128,7 @@ class nuevoDirector(FormView):
 		perfil.save()
 		return super(nuevoDirector, self).form_valid(form)
 
-######
+######hacer una consulta para optener todos los cursos
 class nuevoAlumno(FormView):
 	template_name = 'administrador/nuevoAlumno.html'
 	form_class=UserFormAlumno
@@ -135,21 +138,66 @@ class nuevoAlumno(FormView):
 		perfil=Alumnos()
 		perfil.usuario = user
 		perfil.materno=form.cleaned_data['materno'].capitalize()
+		#perfil.curso.form.cleaned_data['curso']
 		perfil.ci=form.cleaned_data['ci']
 		perfil.telefono=form.cleaned_data['telefono']
 		perfil.save()
 		return super(nuevoAlumno, self).form_valid(form)
 
+def nuevoAlumnoA(request):
+	cursos = Curso.objects.all()
+	print "principal"
+	if request.method=="POST":
+		form=Alumnoforms(request.POST)
+		if(form.is_valid()):
+			alumno=User()
+			alumno.password=request.POST['password']
+			alumno.username=request.POST['username']
+			alumno.first_name=request.POST['first_name']
+			alumno.last_name=request.POST['last_name']
+			alumno.email=request.POST['email']
+			alumno.save()
+			#form.save()
+			objeto = alumno.save()
+			print "ultimo id Registrado",alumno.id
+			perfil=Alumnos()
+			perfil.usuario_id = alumno.id
+			perfil.materno=request.POST['materno']
+			perfil.curso_id=int(request.POST['curso'])
+			perfil.ci=int(request.POST['ci'])
+			perfil.telefono=int(request.POST['telefono'])
+
+			perfil.save()
+			return HttpResponseRedirect("/escogido/%s/"%(alumno.id))
+	form=Alumnoforms()
+	Perfil = formPerfil()
+	return render_to_response('administrador/nuevoAlumno.html',{"form":form,'Perfil':Perfil,'cursos':cursos},RequestContext(request))
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+def verHistoriales(request):
+	historiales = antecedentes.objects.filter(estado=True).order_by("-id")
+	t_his = antecedentes.objects.filter(estado=True).count()
+	alumnos = Alumnos.objects.all().order_by("-id")
+	usuarios = User.objects.filter(is_active=True).order_by("-id")
+	cursos=Curso.objects.filter(estado=True)
+	paginator=Paginator(historiales,20)
+	page = request.GET.get('page')
+	try:
+		contenido = paginator.page(page)
+	except PageNotAnInteger:
+		contenido = paginator.page(1)
+	except EmptyPage:
+		contenido = paginator.page(paginator.num_pages)
+	return render_to_response('administrador/verHistorial.html',{'cursos':cursos,'alumnos':alumnos,'usuarios':usuarios,'contenido':contenido,'historiales':contenido,'t_his':t_his},context_instance=RequestContext(request))
 def verDitectores(request):
 	users=User.objects.all().order_by("-id")
 	perfil=Directores.objects.all().order_by("-id")
 	t_user=Directores.objects.all().count()
 	return render_to_response("administrador/DatosDirectores.html",{'users':users,'perfil':perfil,'t_user':t_user},context_instance=RequestContext(request))
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 def verAlumno(request):
 	users=User.objects.filter(is_staff=False,is_superuser=False).order_by("-id")
 	t_user=User.objects.filter(is_staff=False,is_superuser=False).count()
-	paginator=Paginator(users,25)
+	paginator=Paginator(users,20)
 	page = request.GET.get('page')
 	try:
 		contenido = paginator.page(page)
@@ -200,7 +248,14 @@ def verAvances(request):
 	t_a = Avanse.objects.all().count()
 	return render(request,'inicio/verAvances.html',{'avanses':avanses,'t_a':t_a},context_instance=RequestContext(request))
 def docentes(request):
-	return render(request, 'inicio/docentes.html')
+	director=User.objects.filter(is_superuser=True).order_by("-id")
+	dire=Directores.objects.all().order_by("-id")[0:1]
+	for i in director:
+		for j in dire:
+			if j.usuario.id == i.id:
+				print "director:",i.username
+				break
+	return render(request, 'inicio/docentes.html',{'director':director,'dire':dire})
 
 def generar_pdf(html):
 	resultado=StringIO.StringIO()
@@ -210,16 +265,22 @@ def generar_pdf(html):
 	return HttpResponse("Error al generar el reporte")
 
 def imprimirHistorial(request,id):
-	histo = antecedentes.objects.filter(alumno=int(id)).order_by("-id")[0:1]
-	h=""
-	for i in histo:
-		h=i.alumno
-	print h
-	datos = antecedentes.objects.get(alumno=h)
-	#print datos.alumno
-	nombre_alumno = User.objects.get(username=h)
+	histo = antecedentes.objects.filter(alumno=int(id),estado=True).order_by("-id")[0:1]
+	print histo
+	if len(histo)>0:
+		h=""
+		for i in histo:
+			h=i.id
+			print "hoofofg",h
+			break
+		datos = antecedentes.objects.get(id=int(h))
+		print "daot alumno",datos.alumno
+		nombre_alumno = User.objects.get(username=datos.alumno)
+	else:
+		return HttpResponse("No se Registró ningún historial para este alumno")
 	#print nombre_alumno.get_full_name
-	fecha = datetime.date.today()
+	fecha = datetime.now()
+	fecha="%s/%s/%s" % (fecha.day,fecha.month,fecha.year)
 	html=render_to_string('inicio/imprimirHistorial.html',{'datos':datos,'fecha':fecha,'nombre_alumno':nombre_alumno},context_instance=RequestContext(request))
 	return generar_pdf(html)
 
@@ -265,14 +326,15 @@ def buscar(request):
 			Q(id__icontains=texto) |
 			Q(id__icontains=texto)
 		)
-		resultados=antecedentes.objects.filter(busqueda, estado=True).distinct()
+		resultados=antecedentes.objects.filter(busqueda).distinct()
 		uu=""
 		for i in resultados:
 			uu=i.alumno.ci
+			break
 		try:
 			alumno=User.objects.get(username=uu)
 		except User.DoesNotExist:
-			return HttpResponse("Registro no Encontrado")
+			return HttpResponse("Registro no Encontrado :(")
 		print "User Alumno",alumno
 		return render_to_response('inicio/buscarHistorial.html',{'resultados':resultados,'alumno':alumno},context_instance=RequestContext(request))
 
@@ -300,12 +362,16 @@ def VerAntecedente(request, id):
 	print datos
 	return render(request,'inicio/VerAntecedente.html',{'datos':datos},context_instance=RequestContext(request))
 def verHistorial(request,id):
-	today=datetime.datetime.now()
+	today=datetime.now()
 	inicio="%s-01-01" % (today.year)
-	fin="%s-%s-%s" % (today.year, today.month, calendar.monthrange(today.year-1, today.month+1)[1])
-	datos=antecedentes.objects.filter(alumno=int(id),fecha_registro__range=(inicio,fin)).order_by("-id")
-	cont=antecedentes.objects.filter(alumno=int(id)).count()
+	print inicio
+	fecha=datetime.now()
+	fin="%s-%s-%s" % (today.year, today.month, calendar.monthrange(today.year-1, today.month-1)[1])
+	datos=antecedentes.objects.filter(alumno=int(id),fecha_registro__range=(inicio,fecha)).order_by("-id")
+	print fin
+	cont=antecedentes.objects.filter(alumno=int(id),fecha_registro__range=(inicio,fecha)).count()
 	return render(request,'inicio/VerAntecedente.html',{'datos':datos,'cont':cont},context_instance=RequestContext(request))
+
 def Darbaja(request,id):
 	dato=User.objects.get(id=int(id))
 	return render(request,'inicio/Darbaja.html',{'dato':dato},context_instance=RequestContext(request))
@@ -327,6 +393,7 @@ def EditAlumno(request,id):
 		if formsUser.is_valid() and formsAlum.is_valid():
 			formsUser.save()
 			formsAlum.save()
+			User.objects.filter(id=int(id)).update(username=int(request.POST['ci']))
 			return HttpResponse("Datos Actualizados Correctamente")
 	else:
 		formsUser=FormEditUser(instance=dato)
@@ -370,4 +437,29 @@ def Altadocentes(request, id):
 	return HttpResponse("El Profesor se dió de Alta Correctamente.")
 def Canbiodirector(request,id):
 	User.objects.filter(id=int(id)).update(is_superuser=False)
-	return HttpResponse("Por rasones de seguridad su cuenta se ha dado de bajo,<br>Ingrese con la cuenta del nuevo director.")
+	return HttpResponse("Por razones de seguridad su cuenta se ha dado de bajo,<br>Ingrese con la cuenta del nuevo director.")
+def por_curso(request):
+	id_curso = request.GET['id']
+	alumnos = Alumnos.objects.filter(curso_id=int(id_curso)).distinct().order_by("-id")
+	today=datetime.now()
+	inicio="%s-01-01" % (today.year)
+	fecha=datetime.now()
+	historiales = antecedentes.objects.filter(estado=True,fecha_registro__range=(inicio,fecha)).order_by("-id")
+	#t_his = antecedentes.objects.filter(estado=True).count()#no muestra el total de registros por curso
+	usuarios = User.objects.filter(is_active=True).order_by("-id")
+	cursos=Curso.objects.get(id=int(id_curso))
+	contador = 0
+	for j in historiales:
+		for i in alumnos:
+			for k in usuarios:	
+				if j.alumno.id == i.id and i.usuario.id == k.id:
+					contador=contador +1
+
+	dic={
+		'alumnos':alumnos,
+		'historiales':historiales,
+		't_his':contador,
+		'usuarios':usuarios,
+		'cursos':cursos,
+	}
+	return render(request,'administrador/por_curso.html',dic,context_instance=RequestContext(request))

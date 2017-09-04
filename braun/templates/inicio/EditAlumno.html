@@ -7,6 +7,7 @@
     <button class="btn btn-primary">Actualizar</button>
   </div>
 </form>
+<p id="valid" style="color:red; text_align:center;"></p>
 </div>
 </div>
 <script type="text/javascript">
@@ -30,4 +31,21 @@ $('#TipoT').submit(function(e){
 			}
 		});
  });
+$('#id_ci').blur(ejecutar);
+        function ejecutar(){
+            var use= $('#id_ci').val();
+            $.ajax({
+                type:'get',
+                url:'/verificacion/',
+                data:{'use': use },
+                beforeSend: entesEnviar,
+                success:function (resp){
+                    console.log(resp);
+                    $("#valid").html(resp);
+                }
+            });
+            function entesEnviar(){
+                $('#valid').text("Verificando...")
+            }
+        }
 </script>

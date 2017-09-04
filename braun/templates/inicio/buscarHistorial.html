@@ -16,6 +16,10 @@
 </script>
 {% for i in resultados %}
 <a class="aa"><p style="cursor: pointer;" href="/escogido/{{alumno.id}}/">Cod: {{i.id}}.- <strong>{{i.asunto|upper}}</strong>: {{i.descripcion}}</p></a>
+	{% if i.estado %}
+	{% else %}
+	<strong>El registro esta en baja</strong>
+	{% endif %}
 {% empty %}
 <a href="#">  <span class="glyphicon glyphicon-alert"> </span> No se encontraron registros</a>
 {% endfor %}

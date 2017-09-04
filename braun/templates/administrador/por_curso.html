@@ -1,0 +1,63 @@
+
+<table class="table table-hover table-striped">
+	<tr><td colspan="8" align="center">LISTA DE MEMORANDUM EN EL SISTEMA - GESTIÓN: {% now "Y" %}</td></tr>
+		<tr class="success">
+			<td>Cod</td>
+			<td>Nombre Alumno</td>
+			<td>Asunto</td>
+			<td>Descripción</td>
+			<td>Fecha y hora de Registro</td>
+			<td>Registrado Por:</td>
+			<td>Estado</td>
+		</tr>
+{% for j in historiales %}
+	{% for i in alumnos %}
+		{% for k in usuarios %}
+			{% if j.alumno.id == i.id and i.usuario.id == k.id %}
+			<tr>
+				<td><a href="/escogido/{{i.usuario.id }}/" id="es">
+					<span class="glyphicon glyphicon-chevron-right"></span></a> 
+					{{j.id}}</td>
+				<td>{{k.get_full_name|upper}} {{i.materno|upper}}</td>
+				<td>{{j.asunto|upper}}</td>
+				<td>{{j.descripcion}}</td>
+				<td>{{j.fecha_registro}}</td>
+				<td>{{j.usuario.get_full_name|upper}}</td>
+				<td>
+				{% if j.estado %}
+						<span><img src="/static/img/icon_success.gif"></span>
+					{% else %}
+						<span><img src="/static/img/icon_error.gif"></span>
+				{% endif %}
+				</td>
+			</tr>
+			{% endif %}
+		{% endfor %}		
+	{% endfor %}		
+{% endfor %}
+	<tr>
+		<td></td><td>Registrados:{{t_his}}</td>
+	</tr>
+	</table>
+	<ul class="pager">
+		 <span class="current">
+            Página 1 de 1.
+        </span>
+	</ul>
+<script type="text/javascript">
+	$(".table tr td #es").on("click",function(e){
+		e.preventDefault();
+			$.ajax({
+				type:'GET',
+				url:$(this).attr("href"),
+				beforeSend:Espera,
+				success:function(resp){
+					$("#FormAjax").html(resp);
+				}
+			});
+			 function Espera(){
+		      $("#FormAjax").html('<img src="/static/img/log.gif" id="icono"></img><br>Procesando...');
+		    }
+	});
+</script>
+

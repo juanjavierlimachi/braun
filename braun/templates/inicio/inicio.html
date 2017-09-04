@@ -45,10 +45,8 @@
         <ul class="primary-nav">
           <li><a href="/">Inicio</a></li>
         <!-- <li id="enlaces"><a href="/bimestral/" data-toggle="modal" data-target="#exampleModal">Plan Bimestral</a></li>  -->
-          <!--<li><a href="#services">Services</a></li>-->
-          <!-- <li id="enlaces"><a href="/materias/" data-toggle="modal" data-target="#exampleModal">Actividades</a></li> -->
           <li><a href="javascript: void(0);" onclick="window.open('http://www.facebook.com/sharer.php?u=https://quiet-tor-31619.herokuapp.com/','ventanacompartir', 'toolbar=0, status=0, width=650, height=450');">Compartir</a></li>
-          <li id="enlaces"><a href="/galeria/">Alumnos</a></li>
+          <li id="enlaces"><a href="/docentes/" data-toggle="modal" data-target="#exampleModal">Información</a></li>
           {% if user.is_authenticated %}
             <li><a href="/salir/">Salir</a></li>
           {% else %}
@@ -109,85 +107,10 @@
         </div>
       </div>
 </section>
-<!-- header section --> 
-
-<!-- <section id="gallery" class="gallery section">
-  <div class="container-fluid">
-    <div class="section-header">
-                <h2 class="wow fadeInDown animated">Galeria de Fotos</h2>
-            </div>
-    <div class="row no-gutter">
-      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/01.jpg" class="work-box"> <img src="images/portfolio/01.jpg" alt="">
-        <div class="overlay">
-          <div class="overlay-caption">
-             <p><span class="icon icon-magnifying-glass"></span></p>
-          </div>
-        </div>
-        </a> </div>
-      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/02.jpg" class="work-box"> <img src="images/portfolio/02.jpg" alt="">
-        <div class="overlay">
-          <div class="overlay-caption">
-            <p><span class="icon icon-magnifying-glass"></span></p>
-          </div>
-        </div>
-        </a> </div>
-      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/03.jpg" class="work-box"> <img src="images/portfolio/03.jpg" alt="">
-        <div class="overlay">
-          <div class="overlay-caption">
-            <p><span class="icon icon-magnifying-glass"></span></p>
-          </div>
-        </div>
-        </a> </div>
-      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/04.jpg" class="work-box"> <img src="images/portfolio/04.jpg" alt="">
-        <div class="overlay">
-          <div class="overlay-caption"> 
-            <p><span class="icon icon-magnifying-glass"></span></p>
-          </div>
-        </div>
-        </a> </div>
-		</div>
-    <div class="row">
-      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/05.jpg" class="work-box"> <img src="images/portfolio/05.jpg" alt="">
-        <div class="overlay">
-          <div class="overlay-caption">
-            <p><span class="icon icon-magnifying-glass"></span></p>
-          </div>
-        </div>
-   
-        </a> </div>
-      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/06.jpg" class="work-box"> <img src="images/portfolio/06.jpg" alt="">
-        <div class="overlay">
-          <div class="overlay-caption">
-            <p><span class="icon icon-magnifying-glass"></span></p>
-          </div>
-        </div>
-       
-        </a> </div>
-      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/07.jpg" class="work-box"> <img src="images/portfolio/07.jpg" alt="">
-        <div class="overlay">
-          <div class="overlay-caption">
-            <p><span class="icon icon-magnifying-glass"></span></p>
-          </div>
-        </div>
-        </a> </div>
-      <div class="col-lg-3 col-md-6 col-sm-6 work"> <a href="images/portfolio/08.jpg" class="work-box"> <img src="images/portfolio/08.jpg" alt="">
-        <div class="overlay">
-          <div class="overlay-caption">
-             <p><span class="icon icon-magnifying-glass"></span></p>
-          </div>
-        </div>
- 
-        </a> </div>
-    </div>
-  </div>
-</section> -->
-<!-- gallery section --> 
 <section>
-<p>Sitio Web Desarrollado por: Ing. Juan Javier Limachi - email: sistemasuatf12345@gmail.com</p>
+<p>Sitio Web Desarrollado por: <a href="https://shrouded-journey-73490.herokuapp.com/" target="_blank">CareSoft</a></p>
 </section>
 
-
-<!-- Footer section --> 
 <script src="{% static 'js/jquery.js' %}"></script> 
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/jquery.flexslider-min.js' %}"></script> 

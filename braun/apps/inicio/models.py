@@ -32,9 +32,18 @@ class Avanse(models.Model):
 	fecha_registro=models.DateTimeField(auto_now=True)
 	def __unicode__(self):
 		return self.titulo
+class Curso(models.Model):
+	usuario = models.ForeignKey(User)
+	curso = models.CharField(max_length=50)
+	fecha_registro=models.DateTimeField(auto_now=True)
+	estado=models.BooleanField(default=True)
+	def __unicode__(self):
+		return self.curso
+
 class Alumnos(models.Model):
 	usuario = models.OneToOneField(User, unique=True, related_name='perfilAlumno')
 	materno = models.CharField(max_length=50)
+	curso = models.ForeignKey(Curso)
 	ci = models.IntegerField(blank=True,null=True)
 	telefono = models.IntegerField(blank=True,null=True)
 	def __unicode__(self):

@@ -17,7 +17,7 @@ class UserForm(UserCreationForm):
 	telefono = forms.IntegerField(required=True,label="Teléfono/Celular *")
 	def clean_ci(self):
 		ci=self.cleaned_data['ci']
-		if len(str(ci))>7 or len(str(ci))<=5:
+		if len(str(ci))>8 or len(str(ci))<=5:
 			raise forms.ValidationError('El Nro. de CI. deve ser 6 dígitos')
 		try:
 			p=Perfiles.objects.get(ci=ci)
@@ -69,7 +69,7 @@ class UserFormDirector(UserCreationForm):
 	telefono = forms.IntegerField(label="Teléfono/Celular *")
 	def clean_ci(self):
 		ci=self.cleaned_data['ci']
-		if len(str(ci))>7 or len(str(ci))<=5:
+		if len(str(ci))>8 or len(str(ci))<=5:
 			raise forms.ValidationError('El Nro. de CI. deve ser 6 dígitos')
 		try:
 			p=Directores.objects.get(ci=ci)
@@ -111,6 +111,7 @@ class UserFormAlumno(UserCreationForm):
 	last_name = forms.CharField(max_length=50,required=True, label="Ap. Paterno *")
 	materno = forms.CharField(max_length=50,required=True,label="Ap. Materno *")
 	email = forms.EmailField(required=False,label='Correo Electrónico')
+	#curso = forms.CharField(curso=Curso.objects.all())
 	ci = forms.IntegerField(required=False,label="Nro. de CI. *")
 	telefono = forms.IntegerField(required=False,label="Teléfono/Celular:")
 	def clean_ci(self):
@@ -180,3 +181,13 @@ class FormAnte(forms.ModelForm):
 	class Meta:
 		model=antecedentes
 		exclude=['usuario','alumno','fecha_registro','estado']
+
+
+class Alumnoforms(forms.ModelForm):
+	class Meta:
+		model = User
+		exclude=['groups','user_permissions','is_superuser','is_staff','is_active','last_login','date_joined']
+class formPerfil(forms.ModelForm):
+	class Meta:
+		model = Alumnos
+		exclude=['usuario','telefono']

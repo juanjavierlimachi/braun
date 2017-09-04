@@ -1,0 +1,114 @@
+<div class="table-responsive">
+	<div class="btn-group">
+		<select name="curso_select" id="id_curso_select">
+			<option>Seleccione por Curso</option>
+			{% for i in cursos %}
+			<option value="{{i.id}}"> {{i.curso}} </option>
+			{% empty %}
+			<option>No hay Cursos</option>
+			{% endfor %}
+		</select>
+	</div>
+</div>
+<div class="table-responsive" id="conten">
+
+<table class="table table-hover table-striped">
+	<tr><td colspan="8" align="center">LISTA DE MEMORANDUM EN EL SISTEMA - GESTIÓN: {% now "Y" %}</td></tr>
+		<tr class="success">
+			<td>Cod</td>
+			<td>Alumno</td>
+			
+			<td>Asunto</td>
+			<td>Descripción</td>
+			<td>Fecha y hora de registro</td>
+			<td>Registrado Por:</td>
+			<td>Estado</td>
+		</tr>
+{% for j in historiales %}
+{% for i in alumnos %}
+{% for k in usuarios %}
+{% if j.alumno.id == i.id and i.usuario.id == k.id %}
+<tr>
+	<td><a href="/escogido/{{i.usuario.id }}/" id="es">
+		<span class="glyphicon glyphicon-chevron-right"></span></a> 
+		{{j.id}}</td>
+	<td>{{k.get_full_name|upper}} {{i.materno|upper}}</td>
+	<td>{{j.asunto|upper}}</td>
+	<td>{{j.descripcion}}</td>
+	<td>{{j.fecha_registro}}</td>
+	<td>{{j.usuario.get_full_name|upper}}</td>
+	<td>
+	{% if j.estado %}
+			<span><img src="/static/img/icon_success.gif"></span>
+		{% else %}
+			<span><img src="/static/img/icon_error.gif"></span>
+	{% endif %}
+	</td>
+</tr>
+{% endif %}
+{% endfor %}		
+{% endfor %}		
+{% endfor %}
+	<tr>
+		<td></td><td>Registrados:{{t_his}}</td>
+	</tr>
+	</table>
+	<ul class="pager">
+		{% if contenido.has_previous %}
+			  <li><a href="/verHistoriales/?page={{ contenido.previous_page_number }}">Anterior</a></li>
+		{% endif %}
+		 <span class="current">
+            Página {{ contenido.number }} de {{ contenido.paginator.num_pages }}.
+        </span>
+        {% if contenido.has_next %}
+			  <li><a href="/verHistoriales/?page={{ contenido.next_page_number }}">Siguiente</a></li>
+		{% endif %}
+	</ul>
+</div>
+<script type="text/javascript">
+	$(".table tr td #es").on("click",function(e){
+		e.preventDefault();
+			$.ajax({
+				type:'GET',
+				url:$(this).attr("href"),
+				beforeSend:Espera,
+				success:function(resp){
+					$("#FormAjax").html(resp);
+				}
+			});
+			 function Espera(){
+		      $("#FormAjax").html('<img src="/static/img/log.gif" id="icono"></img><br>Procesando...');
+		    }
+	});
+	$(".pager li a").on("click",function(e){
+		e.preventDefault();
+			$.ajax({
+					type:'GET',
+					url:$(this).attr("href"),
+					beforeSend:Espera,
+					success:function(resp){
+						$("#FormAjax").html(resp);
+					}
+			});
+			 function Espera(){
+		      $("#FormAjax").html('<img src="/static/img/log.gif" id="icono"></img><br>Procesando...');
+		    }
+	});
+	$('#id_curso_select').on('change',inicio);
+	function inicio(){
+		var id = $(this).val();
+		console.log(id);
+		$.ajax({
+			data:{'id':id},
+			url:'/por_curso/',
+			type: 'get',
+			beforeSend:Espera,
+			success: function(data){
+				$("#conten").html(data);
+			}
+		});
+		 function Espera(){
+		      $("#conten").html('<img src="/static/img/log.gif" id="icono"></img><br>Procesando...');
+		    }
+	}
+</script>

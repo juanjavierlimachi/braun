@@ -1,3 +1,36 @@
+<div class="card">
+    <p id="texto">Registrar Nuevo Alumno</p>
+    <span>Todos los campos con (*) son requeridos</span>
+ <form method="POST" id="Tipo" onsubmit="return verificar()"> 
+   {% csrf_token %}
+    <!-- <label for="id_password">Contraseña:</label> -->
+    <input id="id_password" maxlength="128" name="password" type="text">
+<!-- <label for="id_username">Nombre de usuario:</label> -->
+<input id="id_username" maxlength="30" name="username" type="text"><br>
+<label for="id_first_name">Nombres (*):</label>
+<input id="id_first_name" maxlength="50" name="first_name" type="text" required>
+<label for="id_last_name">Ap. Paterno (*):</label>
+<input id="id_last_name" maxlength="30" name="last_name" type="text" required>
+<label for="id_materno">Ap. Materno (*):</label>
+<input id="id_materno" maxlength="30" name="materno" type="text" required>
+<label for="id_curso">Curso (*):</label>
+    <select id="id_curso" name="curso" required>
+        <option value="" selected="selected">---------</option>
+        {% for i in cursos %}
+        <option value="{{i.id}}"> {{i.curso|upper}} </option>
+        {% endfor %}
+    </select>
+<label for="id_ci">Ci (*):</label>
+<input id="id_ci" name="ci" type="number" required>
+<!-- <label for="id_telefono">Telefono:</label> -->
+<input id="id_telefono" name="telefono" type="number" value="0">
+
+<label for="id_email">Dirección de correo electrónico:</label>
+<input id="id_email" maxlength="75" name="email" type="email">
+    <button class="btn btn-success" type="submit" onsubmit="verificar()">Aceptar</button>
+  </form>
+  <p id="valid" style="color:red; text_align:center;"></p>
+</div>
 <script type="text/javascript">
 $('#id_ci').blur(ejecutar);
         function ejecutar(){
@@ -19,7 +52,7 @@ $('#id_ci').blur(ejecutar);
 $("#id_ci").blur(Convalidar);
 function Convalidar(){
     $("#id_username").val($("#id_ci").val());
-    $("#id_password1").val($("#id_ci").val());
+    $("#id_password").val($("#id_ci").val());
     $("#id_password2").val($("#id_ci").val());
 }
 
@@ -41,7 +74,7 @@ function Convalidar(){
         console.log(dato);
         $.ajax({
             type:'POST',
-            url:'/nuevoAlumno/',
+            url:'/nuevoAlumnoA/',
             data: dato,
             success:function(resp){
                 console.log(resp);
@@ -51,29 +84,9 @@ function Convalidar(){
     });
 $(function(){
     document.getElementById("id_first_name").focus();
+    $(".helptext").hide();
+    $("#id_password").hide();
+    $("#id_username").hide();
+    $("#id_telefono").hide();
 });
 </script>
-<div class="card">
-    <p id="texto">Registrar Nuevo Alumno</p>
-    <span>Todos los campos con (*) son requeridos</span>
- <form method="POST" id="Tipo" onsubmit="return verificar()"> 
-   {% csrf_token %}
-    <input id="id_username" maxlength="40" name="username" type="hidden">
-     <input id="id_password1" name="password1" type="hidden">
-<input id="id_password2" name="password2" type="hidden">
-<label for="id_first_name">Nombre Completo *:</label>
-<input id="id_first_name" maxlength="40" name="first_name" type="text" placeholder="Nombre Completo" required />
-<label for="id_last_name">Ap. Paterno *:</label>
-<input id="id_last_name" maxlength="50" name="last_name" type="text" placeholder="Apellido Paterno" required />
-<label for="id_materno">Ap. Materno *:</label>
-<input id="id_materno" maxlength="50" name="materno" type="text" placeholder="Apellido Materno" required />
-<label for="id_ci">Nro. de CI. *:</label>
-<input id="id_ci" name="ci" type="number" placeholder="Max 6 digitos" required />
-<label for="id_telefono">Celular:</label>
-<input id="id_telefono" name="telefono" type="number" placeholder="Celular">
-<label for="id_email">Correo Electrónico:</label>
-<input id="id_email" name="email" type="email" placeholder="Ejem: Jjavier@gmail.com"><br>
-    <button class="btn btn-success" type="submit" onsubmit="verificar()">Aceptar</button>
-  </form>
-  <p id="valid" style="color:red; text_align:center;"></p>
-</div> 

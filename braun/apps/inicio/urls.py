@@ -46,4 +46,7 @@ urlpatterns = patterns('',
     url(r'^Altadocentes/(?P<id>\d+)/$', Altadocentes),
     url(r'^Canbiodirector/(?P<id>\d+)/$', Canbiodirector),
     url(r'^buscar/$', buscar),
+    url(r'^nuevoAlumnoA/$', nuevoAlumnoA),
+    url(r'^verHistoriales/$', verHistoriales),
+    url(r'^por_curso/$', por_curso),
 )

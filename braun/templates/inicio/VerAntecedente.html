@@ -1,4 +1,4 @@
-|upper<div class="table-responsive">
+<div class="table-responsive">
 	<table class="table table-hover table-striped">
 		<tr class="success">
 			<td>Cod</td>
@@ -13,7 +13,7 @@
 		<tr>
 			<td>{{i.id}}</td>
 			<td>{{i.asunto|upper}}</td>
-			<td>{{i.descripcion|upper}}</td>
+			<td>{{i.descripcion}}</td>
 			<td>{{i.fecha_registro}}</td>
 			<td>{{i.usuario.get_full_name|upper}}</td>
 			{% if i.estado %}

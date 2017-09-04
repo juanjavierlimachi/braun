@@ -163,11 +163,23 @@ function DatosUser(){
        $("#FormAjax").html('<img src="/static/img/log.gif" id="icono"></img><br>Procesando...');
     }
   }
-
+function VerMemorandum(){
+  $.ajax({
+      type:'GET',
+      url:'/verHistoriales/',
+      beforeSend:Espera,
+      success:function(resp){
+        $("#FormAjax").html(resp);
+      }
+    });
+    function Espera(){
+       $("#FormAjax").html('<img src="/static/img/log.gif" id="icono"></img><br>Procesando...');
+    }
+}
 function NewAlumnos(){
   $.ajax({
     type:'GET',
-    url:'/nuevoAlumno/',
+    url:'/nuevoAlumnoA/',
     beforeSend:Espera,
     success:function(resp){
       $("#DatosAjax").fadeOut(500);
@@ -314,7 +326,7 @@ function VerAlumnos(){
                             <a href="#"><span class="glyphicon glyphicon-briefcase"></span>              Kardex Alumno</a>
                             <ul class="nav nav-second-level">
                                 <li><a href="#" onclick="NewAntecedente()">Crear Nuevo historial</a></li>
-                                <!-- <li><a href="#" onclick="VerAntecedente()">Ver Plan antecedentes</a></li> -->
+                                <li><a href="#" onclick="VerMemorandum()">Ver Memorandum</a></li>
                             </ul>
                         </li>
                         <li>
@@ -441,7 +453,25 @@ $("#DatosAjax ul li a").click(function(){
     alert($(this).attr("href"));
     return false;
   });
-
+$(function(){
+  bbbb();
+  function bbbb(){
+     var moviendo= false;
+     document.onmousemove = function(){
+            moviendo= true;
+     }
+     setInterval (function() {
+        if (!moviendo) {
+           
+            //alert("no hay movimiento");
+            document.location.href='/salir/';
+        } else {
+            moviendo=false;
+            console.log('en Movimiento');
+        }
+     }, 600000) 
+  }
+});
 </script>
 </body>
 

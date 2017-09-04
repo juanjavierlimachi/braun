@@ -24,9 +24,11 @@
 	</tr>
 	<tr>
 		<td>Nro. de CI: </td><td>{{users.perfilAlumno.ci}}</td>
+		<td>Curso: {{users.perfilAlumno.curso}}</td>
 	</tr>
 	<tr>
 		<td>Telf. - Cel. </td><td>{{users.perfilAlumno.telefono}}</td>
+		<td>Fecha de Registro: {{users.date_joined}}</td>
 	</tr>
 	<tr>
 		<td>Correo electrónico: </td><td>{{users.email}}
@@ -43,7 +45,7 @@
     <button class="btn btn-success">Registrar</button>
   </form>
   {% else %}
-  <p style="color:red;">Por el Momento no puedes Registrar ningún historial por que el alumno está en baja</p>
+  <p style="color:red;">Por el Momento no puedes Registrar ningún historial, por que el alumno está en Baja</p>
   {% endif %}
 </div> 
 </div>
@@ -54,16 +56,22 @@ $(function(){
         e.preventDefault();
         var dato=$(this).serialize();
         console.log(dato);
-        $.ajax({
-            type:'POST',
-            url:'/escogido/'+{{users.id}}+'/',
-            data: dato,
-            success:function(resp){
-                $("#ante").html(resp);
-                $("#ante").fadeIn(500);
-                misAntecedentes();
-            }
-        });
+        if($("#id_asunto").val()=="" && $("#id_descripcion").val()==""){
+        	alert("Por favor complete el formulario.");
+        	$("#id_asunto").focus();
+        }
+        else{
+        	$.ajax({
+	            type:'POST',
+	            url:'/escogido/'+{{users.id}}+'/',
+	            data: dato,
+	            success:function(resp){
+	                $("#ante").html(resp);
+	                $("#ante").fadeIn(500);
+	                misAntecedentes();
+	            }
+	        });
+        }
     });
 function misAntecedentes(){
 	$.ajax({

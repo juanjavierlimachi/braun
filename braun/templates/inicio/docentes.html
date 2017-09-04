@@ -1,8 +1,20 @@
-<div>
-<h1>Docentes</h1>
-</div>
+
+<table class="table table-hover table-striped">
+<tr><td>Colegio:</td><td><label>Nal. Mcal. Otto Felipe Braun</label></td></tr>
+<tr><td>Fundado el:</td><td><label> 7 de abril de 1972</label></td></tr>
+<tr><td>Director Actual:</td><td>
+{% for i in director %}
+	{% for j in dire %}
+		{% if j.usuario.id == i.id %}
+		<label>{{i.get_full_name|upper}} {{j.materno|upper}}</label>
+		{% endif %}
+	{% endfor %}
+{% endfor %}</td></tr>
+<tr><td>Teléfono:</td><td><label>26223885</label></td></tr>
+<tr><td>Dirección:</td><td><label>Av. Fanola esq. Uyuni s/n</label></td></tr>
+</table>
 <script type="text/javascript">
 $(function(){
-	$(".modal-title").text("Plantel Docente Administativo");
+	$(".modal-title").text("Información");
 });
 </script>
